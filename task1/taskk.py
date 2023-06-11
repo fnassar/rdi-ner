@@ -38,11 +38,6 @@ def main():
     # Open file
     with io.open("ANERCorp_Benajiba.txt", 'r', encoding='utf-8') as file1:
         # reading each line
-        
-        max_len = max(len(line.split(' ')[0]) for line in file1)
-        # 
-        
-        
         for line in file1:
             # remove \n
             line2 = line.strip('\n')
@@ -65,13 +60,11 @@ def main():
             # analyze sentence
             if line2[0] == '.':
                 # add var for these TODO: add to sentenceList and fix variables
-                ratio = 0
+
                 # CALC RATIO
                 if(len(collectedSentence) > 0):
                     ratio = non_arabic_ratio(collectedSentence)
                     # print("Sentence: ", collectedSentence, "Ratio: ", ratio)
-                else:
-                    ratio=0
                 sentenceList.append([sentence,"--", numentities, numWords, numChars, types, ratio])    
                 
                 collectedSentence = ""
