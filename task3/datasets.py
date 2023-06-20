@@ -105,6 +105,10 @@ class DataSets_class:
         clf, vectorizer = self.train_model()
         self.evaluate_model(clf, vectorizer, self.all_data['eval'])
   	
+    def get_repitition_dt(self, sub):
+        tempp = self.all_data['test']
+        tempp = tempp.explode('ner_tags')
+        return (tempp['ner_tags'].value_counts(normalize=True).sort_index())
 
 
 
