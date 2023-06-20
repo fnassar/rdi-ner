@@ -20,7 +20,7 @@ class DataSets_class:
         self.label2id = {}
     
     def preprocess(self): # add data into dataframe and divide into sentences
-        self.read('pathhere')
+        self.read('/content/drive/MyDrive/rdi-data/rdi-ner/task3/ANERcorp-CamelLabSplits/')
     
     def read(self, path):
         data = open(path+'ANERCorp_CamelLab_train.txt').readlines()
