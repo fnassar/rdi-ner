@@ -26,8 +26,8 @@ def align_labels_with_tokens(labels, word_ids):
             # Same word as previous token
             label = labels[word_id]
             # If the label is B-XXX we change it to I-XXX
-            if label % 2 == 1:
-                label += 1
+            if label <= 3:
+                label += 4
             new_labels.append(label)
 
     return new_labels
