@@ -67,8 +67,8 @@ def main():
                 # add var for these TODO: add to sentenceList and fix variables
                 ratio = 0
                 # CALC RATIO
-                if(len(collectedSentence) > 0):
-                    ratio = non_arabic_ratio(collectedSentence)
+                if(len(collected_Sentence) > 0):
+                    ratio = non_arabic_ratio(collected_Sentence)
                     # print("Sentence: ", collectedSentence, "Ratio: ", ratio)
                 else:
                     ratio=0
@@ -92,6 +92,7 @@ def main():
                 sentence += line2[0] + " "
                 collectedSentence += line.strip('\n')
                 n += 1
+                
         file1.close()
     # word
     for i in sentenceList:
@@ -104,3 +105,5 @@ def main():
 # calc
 
 main()
+
+
