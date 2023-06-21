@@ -4,6 +4,7 @@ from torch.utils.data import Dataset as BaseDataset
 from torch.nn.utils.rnn import pad_sequence
 
 class Dataset(BaseDataset):
+<<<<<<< HEAD
     def _init_(self,filename ):
         # read filename
         # self.examples = #[]
@@ -64,10 +65,24 @@ class Dataset(BaseDataset):
 
     def _len_(self):
         return len(self.examples)
+=======
+    def __init__(self, encodings, labels=None):
+        # read filename
+        # self.examples = #[]
+        # self.example_tokens = #[]
+        self.encodings = encodings
+        self.labels = encodings["labels"]
+    def __len__(self):
+        return len(self.encodings["input_ids"])
+>>>>>>> 3ccb41f99f861f72431f9ddf61d26fa16e44b825
 
     def _getitem_(self, index):
         #example = self.examples[index]
-        example = self.example_tokens[index*window_size:(index+1)*window_size]
-        example = preprocess(example)
-        return example
-        
+        item = {key:val[idx] for key, val in self.encodings.items()}
+        return item
+    
+
+
+
+
+    
