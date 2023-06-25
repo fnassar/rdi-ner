@@ -2,14 +2,17 @@
 import pandas as pd
 from ast import literal_eval
 from transformers import AutoTokenizer, AutoModelForTokenClassification
+
 def prepare_data(path):
   my_data=pd.read_csv(path,index_col=0)
   my_data["label"]= my_data["label"].apply(lambda x: literal_eval(x))
   my_data["sentence"]= my_data["sentence"].apply(lambda x: literal_eval(x))
   return list(my_data["label"]),list(my_data["sentence"])
+
 def tokenize_text(data_to_be_tokenized):
   tokenizer= AutoTokenizer.from_pretrained("CAMeL-Lab/bert-base-arabic-camelbert-mix-ner")
   return tokenizer(data_to_be_tokenized,padding="max_length",truncation=True,max_length=512,is_split_into_words=True)
+
 def align_labels_with_tokens(labels, word_ids):
     new_labels = []
     current_word = None
