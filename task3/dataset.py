@@ -1,21 +1,42 @@
 import torch
+import math
 import pandas as pd
 from torch.utils.data import Dataset as BaseDataset
 from torch.nn.utils.rnn import pad_sequence
 
 class Dataset(BaseDataset):
-    def __init__(self, encodings, labels=None):
-        # read filename
-        # self.examples = #[]
-        # self.example_tokens = #[]
-        self.encodings = encodings
-        self.labels = encodings["labels"]
+    def __init__(self, in_name, tokenizer, label2id, window_size):
+        self.window_size = window_size
+        self.tokenizer = tokenizer
+        self.example_words = []
+        
+        data = open(in_name).readlines()
+        for line in data:
+            # self.example_words.append(line.strip('\n').split(' '))
+            word, label = line.strip('\n').split(' ') if line else (line, "O")
+            self.example_words.append((word, label2id[label]))
+        self.label2id = label2id
+            
+        
+        
     def __len__(self):
-        return len(self.encodings["input_ids"])
+        return int(math.ciel(len(self.example_words)/self.window_size))
+        # return len(self.example_words)
     def _getitem_(self, index):
         #example = self.examples[index]
-        item = {key:val[idx] for key, val in self.encodings.items()}
-        return item
+        item = []
+        
+        
+        
+        
+        self.examples[index*self.window_size:(index+1)*self.window_size]
+        words = [word for word, _ in item]
+        labels = [label for _, label in item]
+        indices, indices_labels = [], []
+        for (word_tokens, word_indices), word_label in zip(preprocess(words, self.tokenizer), labels):
+            indices.extend(word_indices)
+            indices_labels.extend([word_label]*len(word_indices))
+        return words, labels, indices, indices_labels
     
 
 
