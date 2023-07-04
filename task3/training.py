@@ -132,7 +132,6 @@ ids = tokenizer.convert_tokens_to_ids(tokens)
 decode_str = tokenizer.decode(ids)
 
 ner = pipeline('ner', model=model, tokenizer=tokenizer)
-
 res = ner(sentence)
 
 
