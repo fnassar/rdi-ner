@@ -124,7 +124,7 @@ sentence = ".فرانكفورت (د ب أ) أعلن اتحاد صناعة الس
 
 model_name = 'CAMeL-Lab/bert-base-arabic-camelbert-mix-ner'
 model = AutoModelForTokenClassification.from_pretrained(model_name)
-tokenizer = AutoTokenizer.from_pretrained(model_name)
+tokenizer = AutoTokenizer.from_pretrained(model)
 
 
 tokens = tokenizer.tokenize(sentence)

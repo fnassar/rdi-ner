@@ -1,16 +1,18 @@
+# -*- coding: utf-8 -*-
+
 import torch
 from transformers import BertConfig, BertForTokenClassification, AutoTokenizer
-from torch.nn.modules import module
+# from torch.nn.modules import module
+from torch import nn
 
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
-class Model(nn.module):
+class Model(nn.Module):
     def __init__(self, flag, config=None):
-      if flag:
-          self.model = BertForTokenClassification.from_pretrained("CAMeL-Lab/bert-base-arabic-camelbert-mix-ner")
-      else:
-          self.model = BertForTokenClassification(BertConfig.from_json_file(config)).to(device)
-      
+        super().__init__()  # Call parent class __init__() method
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        if flag:
+            self.model = BertForTokenClassification.from_pretrained("CAMeL-Lab/bert-base-arabic-camelbert-mix-ner")
+        else:
+            self.model = BertForTokenClassification(BertConfig.from_json_file(config)).to(device)
       # def get_model(self):
       #   return self.model
       # self.base_model = self.model.layers[:11]

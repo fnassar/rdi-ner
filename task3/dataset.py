@@ -24,12 +24,7 @@ class Dataset(BaseDataset):
         # return len(self.example_words)
     def _getitem_(self, index):
         #example = self.examples[index]
-        item = []
-        
-        
-        
-        
-        self.examples[index*self.window_size:(index+1)*self.window_size]
+        item = self.examples[index*self.window_size:(index+1)*self.window_size]
         words = [word for word, _ in item]
         labels = [label for _, label in item]
         indices, indices_labels = [], []
