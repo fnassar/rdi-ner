@@ -1,0 +1,4 @@
+torch
+pandas
+camel_tools
+transformers
