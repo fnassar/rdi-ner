@@ -1,5 +1,4 @@
 import torch
-import math
 import pandas as pd
 from torch.utils.data import Dataset as BaseDataset
 from torch.nn.utils.rnn import pad_sequence
@@ -11,24 +10,23 @@ class Dataset(BaseDataset):
         self.example_words = []
         
         data = open(in_name).readlines()
+        sentence = []
+
         for line in data:
-            # self.example_words.append(line.strip('\n').split(' '))
-            # word, label = line.strip('\n').split(' ') if len(line)>0 else (line, "O")
-            if len(line)>0:
-              word, label = line.strip('\n').split(' ')
+            # print(line.strip('\n').split(), len(line), end="___")
+            if len(line)>1:
+                word, label = line.strip('\n').split()
+                sentence.append((word, label2id[label]))
             else:
-              word, label = (line, "O")
-            self.example_words.append((word, label2id[label]))
+                self.example_words.append(sentence)
         self.label2id = label2id
-            
-        
         
     def __len__(self):
-        return int(math.ciel(len(self.example_words)/self.window_size))
-        # return len(self.example_words)
+        return len(self.example_words)
+
     def _getitem_(self, index):
         #example = self.examples[index]
-        item = self.examples[index*self.window_size:(index+1)*self.window_size]
+        item = self.examples[index]
         words = [word for word, _ in item]
         labels = [label for _, label in item]
         indices, indices_labels = [], []
