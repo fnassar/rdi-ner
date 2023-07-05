@@ -15,7 +15,7 @@ class Dataset(BaseDataset):
         for line in data:
             # print(line.strip('\n').split(), len(line), end="___")
             if len(line)>1:
-                word, label = line.strip('\n').split()
+                word, label = line.strip('\n').split(' ')
                 sentence.append((word, label2id[label]))
             else:
                 sentence.append(line.strip('\n'), 'O')
