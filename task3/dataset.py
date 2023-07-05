@@ -5,15 +5,19 @@ from torch.utils.data import Dataset as BaseDataset
 from torch.nn.utils.rnn import pad_sequence
 
 class Dataset(BaseDataset):
-    def __init__(self, in_name, tokenizer, label2id, window_size):
-        self.window_size = window_size
+    def __init__(self, in_name, tokenizer, label2id):
+        super().__init__()
         self.tokenizer = tokenizer
         self.example_words = []
         
         data = open(in_name).readlines()
         for line in data:
             # self.example_words.append(line.strip('\n').split(' '))
-            word, label = line.strip('\n').split(' ') if line else (line, "O")
+            # word, label = line.strip('\n').split(' ') if len(line)>0 else (line, "O")
+            if len(line)>0:
+              word, label = line.strip('\n').split(' ')
+            else:
+              word, label = (line, "O")
             self.example_words.append((word, label2id[label]))
         self.label2id = label2id
             
