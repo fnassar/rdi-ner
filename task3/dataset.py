@@ -18,6 +18,7 @@ class Dataset(BaseDataset):
                 word, label = line.strip('\n').split()
                 sentence.append((word, label2id[label]))
             else:
+                sentence.append(line.strip('\n'), 'O')
                 self.example_words.append(sentence)
         self.label2id = label2id
         
