@@ -7,7 +7,7 @@ from torch import nn
 
 class Model(nn.Module):
     def __init__(self, flag, config=None):
-        super().__init__()  # Call parent class __init__() method
+        super().__init__()
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         if flag:
             self.model = BertForTokenClassification.from_pretrained("CAMeL-Lab/bert-base-arabic-camelbert-mix-ner")
