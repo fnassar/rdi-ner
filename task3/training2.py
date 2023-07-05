@@ -126,7 +126,6 @@ model_name = 'CAMeL-Lab/bert-base-arabic-camelbert-mix-ner'
 model = AutoModelForTokenClassification.from_pretrained(model_name)
 tokenizer = AutoTokenizer.from_pretrained(model)
 
-
 tokens = tokenizer.tokenize(sentence)
 ids = tokenizer.convert_tokens_to_ids(tokens)
 decode_str = tokenizer.decode(ids)

@@ -13,6 +13,10 @@ def tokenize_text(data_to_be_tokenized):
   tokenizer= AutoTokenizer.from_pretrained("CAMeL-Lab/bert-base-arabic-camelbert-mix-ner")
   return tokenizer(data_to_be_tokenized,padding="max_length",truncation=True,max_length=512,is_split_into_words=True)
 
+# def tokenize_text(examples):
+#   tokenizer= AutoTokenizer.from_pretrained("CAMeL-Lab/bert-base-arabic-camelbert-mix-ner")
+#   return tokenizer(examples['tokens'], truncation=True, max_length=1024)
+
 def align_labels_with_tokens(labels, word_ids):
     new_labels = []
     current_word = None
