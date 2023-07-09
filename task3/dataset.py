@@ -49,7 +49,7 @@ class Dataset(BaseDataset):
       [example]
       example: [input, output]
       """
-      inputs = [torch.stack(torch.tensor(item[2])) for item in batch if len(item[2]) > 0]
+      inputs = [torch.tensor(item[2]) for item in batch if len(item[2]) > 0]
       # inputs = [torch.stack(torch.tensor(item[2])) for item in batch]
       # inputs = [torch.stack(item[2]) for item in batch]
       labels = [torch.tensor(item[3]) for item in batch]
