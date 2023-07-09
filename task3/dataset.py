@@ -43,7 +43,6 @@ class Dataset(BaseDataset):
       return words, labels , indices, indices_labels
     
     def collate_fn(self, batch):
-      print(batch)
       """
       batch: list[tuple]
       [example]
