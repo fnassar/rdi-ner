@@ -19,7 +19,7 @@ class Model(nn.Module):
       # self.dense1 = nn.Linear(300, 10)
     
 
-    def forward(self, inputs, labels=None):
+    def forward(self, inputs):
         outputs = self.model(inputs)
         # logits = self.dense1(outputs)
         return outputs
