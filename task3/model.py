@@ -18,10 +18,11 @@ class Model(nn.Module):
       # self.base_model = self.model.layers[:11]
       # self.dense1 = nn.Linear(300, 10)
 
-    def forward(self, inputs):
+    def forward(self, inputs, labels=None):
         outputs = self.model(inputs)
         # logits = self.dense1(outputs)
         return outputs
+
 
 from sklearn.metrics import f1_score
 
