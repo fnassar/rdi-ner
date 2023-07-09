@@ -17,13 +17,19 @@ class Model(nn.Module):
       #   return self.model
       # self.base_model = self.model.layers[:11]
       # self.dense1 = nn.Linear(300, 10)
+    
+    loss_fn = nn.CrossEntropyLoss()
 
     def forward(self, inputs, labels=None):
         outputs = self.model(inputs)
-        print(labels.shape) # Print the shape of the target tensor
-        loss = self.loss_fn(outputs, labels)
-        return loss
+        # logits = self.dense1(outputs)
+        return outputs
 
+    # def forward(self, inputs, labels=None):
+    #     outputs = self.model(inputs)
+    #     print(labels.shape) # Print the shape of the target tensor
+    #     loss = self.loss_fn(outputs, labels)
+    #     return loss
 
 
 from sklearn.metrics import f1_score
