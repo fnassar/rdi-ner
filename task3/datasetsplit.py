@@ -3,7 +3,7 @@ import random
 
 def split_data_file(data_file, train_ratio):
     with open(data_file, 'r') as file:
-        lines = file.readlines()
+      lines = file.readlines()
     lines[len(lines)-1] +='\n'
     random.shuffle(lines)
 
@@ -13,7 +13,15 @@ def split_data_file(data_file, train_ratio):
     train_data = lines[:train_samples]
     test_data = lines[train_samples:]
 
-    return train_data, test_data
+    with open('ANERcorp-CamelLabSplits/train_data.txt', 'w') as file:
+      for line in train_data:
+        file.write(line)
+
+    with open('ANERcorp-CamelLabSplits/eval_data.txt', 'w') as file:
+      for line in test_data:
+        file.write(line)
+
+    # return train_data, test_data
 
 
 

@@ -28,36 +28,32 @@ class Dataset(BaseDataset):
         self.label2id = label2id
         
     def __len__(self):
-        return len(self.example_words-1)
+        return len(self.example_words)-1
 
     def __getitem__(self, index):
       item = self.example_words[index]
       words = [word for word, _ in item]
       labels = [label for _, label in item]
       indices, indices_labels = [], []
-      # print((preprocess(words, self.tokenizer), labels))
 
-      for (word_tokens, word_indices), word_label in zip(preprocess(words, self.tokenizer), labels):
-          indices.extend(word_indices)
-          indices_labels.extend([word_label]*len(word_indices))
-      # for word_indices, word_label in zip(preprocess(words, self.tokenizer), labels):
-      #   indices.extend(word_indices)
-      #   indices_labels.extend([word_label]*len(word_indices))
+      for word_indices, word_label in zip(preprocess(words, self.tokenizer), labels):
+        indices.extend(word_indices)
+        indices_labels.extend([word_label]*len(word_indices))
 
       return words, labels , indices, indices_labels
     
-    # def collate_fn(self, batch):
-    #   """
-    #   batch: list[tuple]
-    #   [example]
-    #   example: [input, output]
-    #   """
-    #   inputs = [torch.stack(item[2]) for item in batch]
-    #   labels = [torch.tensor(item[3]) for item in batch]
+    def collate_fn(self, batch):
+      """
+      batch: list[tuple]
+      [example]
+      example: [input, output]
+      """
+      inputs = [torch.stack(item[2]) for item in batch]
+      labels = [torch.tensor(item[3]) for item in batch]
 
-    #   inputs = pad_sequence(inputs, batch_first=True)
-    #   labels = pad_sequence(labels, batch_first=True)
-    #   return {"inputs":inputs, "labels": labels}
+      inputs = pad_sequence(inputs, batch_first=True)
+      labels = pad_sequence(labels, batch_first=True)
+      return {"inputs":inputs, "labels": labels}
     
 
 

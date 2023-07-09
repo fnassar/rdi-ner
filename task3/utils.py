@@ -9,12 +9,15 @@ def prepare_data(path):
   my_data["sentence"]= my_data["sentence"].apply(lambda x: literal_eval(x))
   return list(my_data["label"]),list(my_data["sentence"])
 
+# def preprocess(data, tokenizer):
+#   tokens = tokenizer(data)
+#   token = [(tokens,i) for i, token in enumerate(tokens.input_ids)]
+#   return (token)
+
 def preprocess(data, tokenizer):
-  tokens = tokenizer(data)
-  # print([(tokens, i) for i, token in enumerate(tokens.input_ids)], tokens.input_ids)
-  # return (tokens['input_ids'],tokens['token_type_ids']) #, list(range(len(tokens.input_ids))) 
-  token = tokens['input_ids']
-  return (token, len(token))
+  tokens = tokenizer(data) 
+  token = [token[1:len(token)-1] for token in tokens['input_ids']]
+  return (token)
 
 # def tokenize_text(examples):
 #   tokenizer= AutoTokenizer.from_pretrained("CAMeL-Lab/bert-base-arabic-camelbert-mix-ner")
