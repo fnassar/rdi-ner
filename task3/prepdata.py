@@ -10,5 +10,7 @@ def text_label_df(data_arr):
 
   return pd.DataFrame(data_arr, columns=['text', 'label'])
 
-
 # 'id':[num], 'tokens':[sentence cut], 'ner_tags':[],'sentences':[]
+
+
+

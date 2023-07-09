@@ -1,4 +1,4 @@
-!pip install transformers
+# !pip install transformers
 import pandas as pd
 from ast import literal_eval
 from transformers import AutoTokenizer, AutoModelForTokenClassification
@@ -9,9 +9,12 @@ def prepare_data(path):
   my_data["sentence"]= my_data["sentence"].apply(lambda x: literal_eval(x))
   return list(my_data["label"]),list(my_data["sentence"])
 
-def tokenize_text(data_to_be_tokenized):
-  tokenizer= AutoTokenizer.from_pretrained("CAMeL-Lab/bert-base-arabic-camelbert-mix-ner")
-  return tokenizer(data_to_be_tokenized,padding="max_length",truncation=True,max_length=512,is_split_into_words=True)
+def preprocess(data, tokenizer):
+  tokens = tokenizer(data)
+  # print([(tokens, i) for i, token in enumerate(tokens.input_ids)], tokens.input_ids)
+  # return (tokens['input_ids'],tokens['token_type_ids']) #, list(range(len(tokens.input_ids))) 
+  token = tokens['input_ids']
+  return (token, len(token))
 
 # def tokenize_text(examples):
 #   tokenizer= AutoTokenizer.from_pretrained("CAMeL-Lab/bert-base-arabic-camelbert-mix-ner")

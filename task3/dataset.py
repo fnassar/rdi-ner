@@ -3,7 +3,7 @@ import pandas as pd
 from torch.utils.data import Dataset as BaseDataset
 from torch.nn.utils.rnn import pad_sequence
 
-from utils import prepare_data, tokenize_text,align_labels_with_tokens
+from utils import preprocess
 
 class Dataset(BaseDataset):
     def __init__(self, in_name, tokenizer, label2id):
@@ -24,20 +24,40 @@ class Dataset(BaseDataset):
                 word, label = (line.strip('\n'), 'O')
                 sentence.append((word, label2id[label]))
                 self.example_words.append(sentence)
+                sentence = []
         self.label2id = label2id
         
     def __len__(self):
-        return len(self.example_words)
+        return len(self.example_words-1)
 
     def __getitem__(self, index):
       item = self.example_words[index]
       words = [word for word, _ in item]
       labels = [label for _, label in item]
       indices, indices_labels = [], []
+      # print((preprocess(words, self.tokenizer), labels))
+
       for (word_tokens, word_indices), word_label in zip(preprocess(words, self.tokenizer), labels):
           indices.extend(word_indices)
           indices_labels.extend([word_label]*len(word_indices))
-      return words, labels, indices, indices_labels
+      # for word_indices, word_label in zip(preprocess(words, self.tokenizer), labels):
+      #   indices.extend(word_indices)
+      #   indices_labels.extend([word_label]*len(word_indices))
+
+      return words, labels , indices, indices_labels
+    
+    # def collate_fn(self, batch):
+    #   """
+    #   batch: list[tuple]
+    #   [example]
+    #   example: [input, output]
+    #   """
+    #   inputs = [torch.stack(item[2]) for item in batch]
+    #   labels = [torch.tensor(item[3]) for item in batch]
+
+    #   inputs = pad_sequence(inputs, batch_first=True)
+    #   labels = pad_sequence(labels, batch_first=True)
+    #   return {"inputs":inputs, "labels": labels}
     
 
 
