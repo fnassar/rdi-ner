@@ -52,7 +52,7 @@ class Dataset(BaseDataset):
       inputs = [torch.tensor(item[2]) for item in batch if len(item[2]) > 0]
       # inputs = [torch.stack(torch.tensor(item[2])) for item in batch]
       # inputs = [torch.stack(item[2]) for item in batch]
-      labels = [torch.tensor(item[3]) for item in batch]
+      labels = [torch.tensor(item[3]) for item in batch if len(item[3]) > 0]
 
       inputs = pad_sequence(inputs, batch_first=True)
       labels = pad_sequence(labels, batch_first=True)
