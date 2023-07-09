@@ -43,12 +43,12 @@ class Dataset(BaseDataset):
       return words, labels , indices, indices_labels
     
     def collate_fn(self, batch):
+      print(batch)
       """
       batch: list[tuple]
       [example]
       example: [input, output]
       """
-      print([torch.stack(item[2]) for item in batch], [torch.tensor(item[3]) for item in batch])
       inputs = [torch.stack(torch.tensor(item[2] if isinstance(item[2], list) else [item[2]])) for item in batch]
       # inputs = [torch.stack(torch.tensor(item[2])) for item in batch]
       # inputs = [torch.stack(item[2]) for item in batch]
