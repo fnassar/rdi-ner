@@ -3,6 +3,8 @@ import pandas as pd
 from torch.utils.data import Dataset as BaseDataset
 from torch.nn.utils.rnn import pad_sequence
 
+from utils import prepare_data, tokenize_text,align_labels_with_tokens
+
 class Dataset(BaseDataset):
     def __init__(self, in_name, tokenizer, label2id):
         super().__init__()
@@ -16,25 +18,26 @@ class Dataset(BaseDataset):
             # print(line.strip('\n').split(), len(line), end="___")
             if len(line)>1:
                 word, label = line.strip('\n').split(' ')
+                # print(word, label)
                 sentence.append((word, label2id[label]))
             else:
-                sentence.append(line.strip('\n'), 'O')
+                word, label = (line.strip('\n'), 'O')
+                sentence.append((word, label2id[label]))
                 self.example_words.append(sentence)
         self.label2id = label2id
         
     def __len__(self):
         return len(self.example_words)
 
-    def _getitem_(self, index):
-        #example = self.examples[index]
-        item = self.examples[index]
-        words = [word for word, _ in item]
-        labels = [label for _, label in item]
-        indices, indices_labels = [], []
-        for (word_tokens, word_indices), word_label in zip(preprocess(words, self.tokenizer), labels):
-            indices.extend(word_indices)
-            indices_labels.extend([word_label]*len(word_indices))
-        return words, labels, indices, indices_labels
+    def __getitem__(self, index):
+      item = self.example_words[index]
+      words = [word for word, _ in item]
+      labels = [label for _, label in item]
+      indices, indices_labels = [], []
+      for (word_tokens, word_indices), word_label in zip(preprocess(words, self.tokenizer), labels):
+          indices.extend(word_indices)
+          indices_labels.extend([word_label]*len(word_indices))
+      return words, labels, indices, indices_labels
     
 
 
