@@ -13,7 +13,31 @@ from transformers import AutoTokenizer, Trainer, AutoModelForTokenClassification
 # my files/ classes
 from dataset import Dataset
 from model import Model, compute_metrics
-from utils import split_data_file
+from utils import split_data_file, prep_loss_data
+
+class_weights = []
+
+
+class WeightedLossTrainer(Trainer):
+    def compute_loss(self, model, inputs, return_outputs=False):
+        labels = inputs.get("labels")
+        # forward pass
+        outputs = model(**inputs)
+        logits = outputs.get("logits")
+
+        
+        logits = logits.view(-1, logits.shape[-1])
+
+        # Reshape labels from (batch_size, sequence_length) to (batch_size * sequence_length,)
+        labels = labels.view(-1)
+
+        # Compute loss
+        loss_func = nn.CrossEntropyLoss(weight=class_weights)
+        loss = loss_func(logits, labels) #loss_func(logits.view(-1, self.model.config.num_labels), labels.view(-1))
+        return (loss, outputs) if return_outputs else loss
+
+
+
 
 
 def main():
@@ -22,11 +46,6 @@ def main():
     args = (a for a in sys.argv[1:] if not (a[:1]=="-" and a[1:]))
     kwargs = {k: next(iter(v), True) for k, *v in (a.lstrip("-").split("=",1) for a in sys.argv[1:] if (a[:1]=="-" and a[1:]))}
     return run(*args, **kwargs)
-
-def class_weights(train_dataset):
-    class_weights = (1- (train_dataset[].value_counts().sort_index()/len(train_dataset))).values
-
-
 
 def run(train_name, eval_name=None, out_name="train", epochs=3, train_batch_size=16, eval_batch_size=None, gradient_accumulation_steps=1, config=None):
 
@@ -45,6 +64,8 @@ def run(train_name, eval_name=None, out_name="train", epochs=3, train_batch_size
     label2id = model.model.config.label2id
 
     tokenizer = AutoTokenizer.from_pretrained("CAMeL-Lab/bert-base-arabic-camelbert-mix-ner")
+
+    class_weights = prep_loss_data(label2id, train_data)
     
     # get data from dataset.py
     if(eval_name):

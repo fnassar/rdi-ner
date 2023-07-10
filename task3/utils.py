@@ -1,9 +1,23 @@
 
 import random
 
-# import pandas as pd
-# from ast import literal_eval
-# from transformers import AutoTokenizer, AutoModelForTokenClassification
+from torch import nn
+from transformers import Trainer
+
+import pandas as pd
+
+
+def prep_loss_data(label2id, train_data):
+    id2label = {v:k for k,v in label2id.items()}
+
+    data = ({'words':train_data[i][0], 'labels':[id2label[label] for label in train_data[i][1]], 'tokens':train_data[i][2], 'token_label':train_data[i][3]} for i in range(len(train_data)))
+    df_train = pd.DataFrame(data)
+    df_train = df_train.explode('labels')
+    class_weights = (1- (df_train['labels'].value_counts(normalize=True).sort_index())).values
+
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    class_weights = torch.from_numpy(class_weights).float().to(device)
+    return class_weights
 
 
 def preprocess(data, tokenizer):
@@ -37,6 +51,9 @@ def split_data_file(data_file, train_ratio):
     test_name = "./ANERcorp-CamelLabSplits/train_data.txt"
 
     return train_name, test_name
+
+
+
 
 # def align_labels_with_tokens(labels, word_ids):
 #     new_labels = []
