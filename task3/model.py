@@ -13,10 +13,6 @@ class Model(nn.Module):
             self.model = BertForTokenClassification.from_pretrained("CAMeL-Lab/bert-base-arabic-camelbert-mix-ner")
         else:
             self.model = BertForTokenClassification(BertConfig.from_json_file(config)).to(device)
-      # def get_model(self):
-      #   return self.model
-      # self.base_model = self.model.layers[:11]
-      # self.dense1 = nn.Linear(300, 10)
     
 
     def forward(self, inputs):
@@ -34,7 +30,15 @@ class Model(nn.Module):
 from sklearn.metrics import f1_score
 
 def compute_metrics(pred):
-  labels = pred.label_ids
-  preds = pred.preditions.argmax(-1)
-  f1 = f1_score(labels, preds, average="weighted")
-  return {"f1":f1}
+    labels = pred.label_ids.flatten()
+    preds = pred.predictions.argmax(-1).flatten()
+    mask = labels!=-100
+
+    labels, preds = labels[mask], preds[mask]
+
+
+    f1 = f1_score(labels, preds, average="macro")
+    return {"f1":f1}
+
+
+

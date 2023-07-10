@@ -6,9 +6,9 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import f1_score
 from torch import nn
 from transformers import AutoTokenizer, Trainer, AutoModelForTokenClassification, TrainingArguments
-import traceback
-import json
-import glob
+# import traceback
+# import json
+# import glob
 
 # my files/ classes
 from dataset import Dataset
@@ -82,5 +82,5 @@ def run(train_name, eval_name=None, out_name="train", epochs=3, train_batch_size
     trainer.train()
 
 
-    
+main()
     
