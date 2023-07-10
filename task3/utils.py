@@ -6,20 +6,6 @@ from transformers import Trainer
 
 import pandas as pd
 
-
-# def prep_loss_data(label2id, train_data):
-#     id2label = {v:k for k,v in label2id.items()}
-
-#     data = ({'words':train_data[i][0], 'labels':[id2label[label] for label in train_data[i][1]], 'tokens':train_data[i][2], 'token_label':train_data[i][3]} for i in range(len(train_data)))
-#     df_train = pd.DataFrame(data)
-#     df_train = df_train.explode('labels')
-#     class_weights = (1- (df_train['labels'].value_counts(normalize=True).sort_index())).values
-
-#     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-#     class_weights = torch.from_numpy(class_weights).float().to(device)
-#     return class_weights
-
-
 def preprocess(data, tokenizer):
   tokens = tokenizer(data) 
   token = [token[1:len(token)-1] for token in tokens['input_ids']]

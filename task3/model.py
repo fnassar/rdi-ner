@@ -17,15 +17,7 @@ class Model(nn.Module):
 
     def forward(self, inputs, labels=None):
         outputs = self.model(inputs)
-        # logits = self.dense1(outputs)
         return outputs
-
-    # def forward(self, inputs, labels=None):
-    #     outputs = self.model(inputs)
-    #     print(labels.shape) # Print the shape of the target tensor
-    #     loss = self.loss_func(outputs, labels)
-    #     return loss
-
 
 from sklearn.metrics import f1_score
 
