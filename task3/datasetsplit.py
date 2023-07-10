@@ -13,15 +13,18 @@ def split_data_file(data_file, train_ratio):
     train_data = lines[:train_samples]
     test_data = lines[train_samples:]
 
-    with open('ANERcorp-CamelLabSplits/train_data.txt', 'w') as file:
+    with open('./ANERcorp-CamelLabSplits/train_data.txt', 'w') as file:
       for line in train_data:
         file.write(line)
 
-    with open('ANERcorp-CamelLabSplits/eval_data.txt', 'w') as file:
+    with open('./ANERcorp-CamelLabSplits/eval_data.txt', 'w') as file:
       for line in test_data:
         file.write(line)
 
-    # return train_data, test_data
+    train_name = "./ANERcorp-CamelLabSplits/train_data.txt"
+    test_name = "./ANERcorp-CamelLabSplits/train_data.txt"
+
+    return train_name, test_name
 
 
 

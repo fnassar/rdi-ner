@@ -1,4 +1,2 @@
-torch
 pandas
-camel_tools
-transformers
+transformers[torch]
