@@ -18,23 +18,23 @@ from utils import split_data_file, prep_loss_data
 class_weights = []
 
 
-class WeightedLossTrainer(Trainer):
-    def compute_loss(self, model, inputs, return_outputs=False):
-        labels = inputs.get("labels")
-        # forward pass
-        outputs = model(**inputs)
-        logits = outputs.get("logits")
+# class WeightedLossTrainer(Trainer):
+#     def compute_loss(self, model, inputs, return_outputs=False):
+#         labels = inputs.get("labels")
+#         # forward pass
+#         outputs = model(**inputs)
+#         logits = outputs.get("logits")
 
         
-        logits = logits.view(-1, logits.shape[-1])
+#         logits = logits.view(-1, logits.shape[-1])
 
-        # Reshape labels from (batch_size, sequence_length) to (batch_size * sequence_length,)
-        labels = labels.view(-1)
+#         # Reshape labels from (batch_size, sequence_length) to (batch_size * sequence_length,)
+#         labels = labels.view(-1)
 
-        # Compute loss
-        loss_func = nn.CrossEntropyLoss(weight=class_weights)
-        loss = loss_func(logits, labels) #loss_func(logits.view(-1, self.model.config.num_labels), labels.view(-1))
-        return (loss, outputs) if return_outputs else loss
+#         # Compute loss
+#         loss_func = nn.CrossEntropyLoss(weight=class_weights)
+#         loss = loss_func(logits, labels) #loss_func(logits.view(-1, self.model.config.num_labels), labels.view(-1))
+#         return (loss, outputs) if return_outputs else loss
 
 
 
