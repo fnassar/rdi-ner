@@ -23,6 +23,11 @@ def main():
     kwargs = {k: next(iter(v), True) for k, *v in (a.lstrip("-").split("=",1) for a in sys.argv[1:] if (a[:1]=="-" and a[1:]))}
     return run(*args, **kwargs)
 
+def class_weights(train_dataset):
+    class_weights = (1- (train_dataset[].value_counts().sort_index()/len(train_dataset))).values
+
+
+
 def run(train_name, eval_name=None, out_name="train", epochs=3, train_batch_size=16, eval_batch_size=None, gradient_accumulation_steps=1, config=None):
 
     # train_name, eval_name=None, out_name="train", epochs=3, train_batch_size=16, eval_batch_size=None, gradient_accumulation_steps=1, config=None
