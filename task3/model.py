@@ -15,7 +15,7 @@ class Model(nn.Module):
             self.model = BertForTokenClassification(BertConfig.from_json_file(config)).to(device)
     
 
-    def forward(self, inputs):
+    def forward(self, inputs, labels=None):
         outputs = self.model(inputs)
         # logits = self.dense1(outputs)
         return outputs
