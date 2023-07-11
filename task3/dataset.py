@@ -13,50 +13,35 @@ class Dataset(BaseDataset):
         self.window_size = window_size
         
         data = open(in_name).readlines()
-        # sentence = []
+        sentence = []
 
         for line in data:
-            # if len(line)>1:
-            #     word, label = line.strip('\n').split(' ')
-            #     # print(word, label)
-            #     # sentence.append((word, label2id[label]))
-            # else:
-            #     word, label = (line.strip('\n'), 'O')
-            #     # sentence.append((word, label2id[label]))
-            #     # 
-            #     # sentence = []
-            word, label = line.strip('\n').split(' ') if len(line)>1 else ("", 'O')
-            self.example_words.append((word, label2id[label]))
-        # print(self.example_words)
+            if len(line)>1:
+                word, label = line.strip('\n').split(' ')
+                # print(word, label)
+                sentence.append((word, label2id[label]))
+            else:
+                word, label = (line.strip('\n'), 'O')
+                sentence.append((word, label2id[label]))
+                self.example_words.append(sentence)
+                sentence = []
         self.label2id = label2id
 
     def __len__(self):
-        return len(self.example_words)-1
+        return len(self.example_words)
 
     def __getitem__(self, index):
-        item = self.example_words[index*self.window_size:(index+1)*self.window_size]
+        item = self.example_words[index]
         words = [word for word, _ in item]
         labels = [label for _, label in item]
         indices, indices_labels = [], []
-        print("words", item, words)
-        for word_indices, word_label in zip(preprocess(words, self.tokenizer), labels):
+
+        for (word_tokens, word_indices), word_label in zip(preprocess(words, self.tokenizer), labels):
             indices.extend(word_indices)
             indices_labels.extend([word_label]*len(word_indices))
         # if len(indices)<2: 
-        #     print("h    ", words, labels , indices, indices_labels)
+        # print("h    ", words, labels , indices, indices_labels)
         return words, labels , indices, indices_labels
-
-        # item = self.example_words[index]
-        # words = [word for word, _ in item]
-        # labels = [label for _, label in item]
-        # indices, indices_labels = [], []
-
-        # for word_indices, word_label in zip(preprocess(words, self.tokenizer), labels):
-        #     indices.extend(word_indices)
-        #     indices_labels.extend([word_label]*len(word_indices))
-        # # if len(indices)<2: 
-        # #     print("h    ", words, labels , indices, indices_labels)
-        # return words, labels , indices, indices_labels
     
     def collate_fn(self, batch):
       """

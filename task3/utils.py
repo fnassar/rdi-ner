@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 
 import random
 
@@ -6,15 +7,33 @@ from transformers import Trainer
 
 import pandas as pd
 
-def preprocess(data, tokenizer):
-    tokens = tokenizer(data) 
-    print(tokens)
-    token = ([[token[1]] for token in tokens['input_ids']])
-    # print(token)
-    # token = [token[1:len(token)-1] for token in tokens['input_ids']]
-    
-    return token
+remove_diacs = lambda text: "".join(c for c in text if not 1611<=ord(c)<=1618)
 
+clean_text = lambda text: remove_diacs(text).replace("-", "")
+
+def preprocess(data, tokenizer):
+    
+    if isinstance(data, str): data = data.split()
+    for word in data:
+        tokenized = tokenizer(word, truncation=True, add_special_tokens=False, return_tensors="pt")
+        input_ids = tokenized["input_ids"][0]
+        tokens = tokenized.tokens()
+        yield tokens, input_ids.long()
+        # print(tokens, input_ids.long(), end=" ")
+    # print("")
+
+    # # print(tokens)
+    
+    # return tokens, input_ids.long()
+
+# def preprocess(data, tokenizer):
+#     tokens = tokenizer(data) 
+#     print(tokens)
+#     token = ([[token[1]] for token in tokens['input_ids']])
+#     # print(token)
+#     # token = [token[1:len(token)-1] for token in tokens['input_ids']]
+    
+#     return token
 
 
 def split_data_file(data_file, train_ratio):
