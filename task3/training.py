@@ -20,7 +20,7 @@ def main():
     kwargs = {k: next(iter(v), True) for k, *v in (a.lstrip("-").split("=",1) for a in sys.argv[1:] if (a[:1]=="-" and a[1:]))}
     return run(*args, **kwargs)
 
-def run(train_name, eval_name=None, out_name="train", epochs=3, train_batch_size=16, eval_batch_size=None, gradient_accumulation_steps=1, config=None):
+def run(train_name, eval_name=None, out_name="train", epochs=5, train_batch_size=16, eval_batch_size=None, gradient_accumulation_steps=5, config=None):
     epochs = int(epochs)
     train_batch_size = int(train_batch_size)
     eval_batch_size = int(eval_batch_size) if eval_batch_size else train_batch_size
@@ -59,8 +59,8 @@ def run(train_name, eval_name=None, out_name="train", epochs=3, train_batch_size
         gradient_accumulation_steps = gradient_accumulation_steps,
         label_names=["labels"],
         label_smoothing_factor=0.001,
-        evaluation_strategy="steps",
-        # evaluation_strategy="epoch",
+        # evaluation_strategy="steps",
+        evaluation_strategy="epoch",
         logging_steps = logging_steps
         )
 

@@ -27,10 +27,13 @@ def compute_metrics(pred):
     labels = pred.label_ids.flatten()
     preds = pred.predictions.argmax(-1).flatten()
     mask = labels!=-100
-
     labels, preds = labels[mask], preds[mask]
-
     f1 = f1_score(labels, preds, average="macro")
+    return {"f1":f1}
+
+
+
+"""
 
     id2label = {0: 'B-LOC',1: 'B-MISC', 2: 'B-ORG', 3: 'B-PERS', 4: 'I-LOC', 5: 'I-MISC', 6: 'I-ORG', 7: 'I-PERS', 8: 'O'}
 
@@ -43,8 +46,4 @@ def compute_metrics(pred):
     print(len(labels))
 
     print(report)
-
-    return {"f1":f1}
-
-
-
+"""

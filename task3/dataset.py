@@ -6,40 +6,57 @@ from torch.nn.utils.rnn import pad_sequence
 from utils import preprocess
 
 class Dataset(BaseDataset):
-    def __init__(self, in_name, tokenizer, label2id):
+    def __init__(self, in_name, tokenizer, label2id, window_size=100):
         super().__init__()
         self.tokenizer = tokenizer
         self.example_words = []
+        self.window_size = window_size
         
         data = open(in_name).readlines()
-        sentence = []
+        # sentence = []
 
         for line in data:
-            if len(line)>1:
-                word, label = line.strip('\n').split(' ')
-                # print(word, label)
-                sentence.append((word, label2id[label]))
-            else:
-                word, label = (line.strip('\n'), 'O')
-                sentence.append((word, label2id[label]))
-                self.example_words.append(sentence)
-                sentence = []
+            # if len(line)>1:
+            #     word, label = line.strip('\n').split(' ')
+            #     # print(word, label)
+            #     # sentence.append((word, label2id[label]))
+            # else:
+            #     word, label = (line.strip('\n'), 'O')
+            #     # sentence.append((word, label2id[label]))
+            #     # 
+            #     # sentence = []
+            word, label = line.strip('\n').split(' ') if len(line)>1 else ("", 'O')
+            self.example_words.append((word, label2id[label]))
+        # print(self.example_words)
         self.label2id = label2id
 
     def __len__(self):
         return len(self.example_words)-1
 
     def __getitem__(self, index):
-        item = self.example_words[index]
+        item = self.example_words[index*self.window_size:(index+1)*self.window_size]
         words = [word for word, _ in item]
         labels = [label for _, label in item]
         indices, indices_labels = [], []
-
+        print("words", item, words)
         for word_indices, word_label in zip(preprocess(words, self.tokenizer), labels):
             indices.extend(word_indices)
             indices_labels.extend([word_label]*len(word_indices))
-        print(words, labels , indices, indices_labels)
+        # if len(indices)<2: 
+        #     print("h    ", words, labels , indices, indices_labels)
         return words, labels , indices, indices_labels
+
+        # item = self.example_words[index]
+        # words = [word for word, _ in item]
+        # labels = [label for _, label in item]
+        # indices, indices_labels = [], []
+
+        # for word_indices, word_label in zip(preprocess(words, self.tokenizer), labels):
+        #     indices.extend(word_indices)
+        #     indices_labels.extend([word_label]*len(word_indices))
+        # # if len(indices)<2: 
+        # #     print("h    ", words, labels , indices, indices_labels)
+        # return words, labels , indices, indices_labels
     
     def collate_fn(self, batch):
       """
