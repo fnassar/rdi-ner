@@ -25,21 +25,21 @@ class Dataset(BaseDataset):
                 self.example_words.append(sentence)
                 sentence = []
         self.label2id = label2id
-        
+
     def __len__(self):
         return len(self.example_words)-1
 
     def __getitem__(self, index):
-      item = self.example_words[index]
-      words = [word for word, _ in item]
-      labels = [label for _, label in item]
-      indices, indices_labels = [], []
+        item = self.example_words[index]
+        words = [word for word, _ in item]
+        labels = [label for _, label in item]
+        indices, indices_labels = [], []
 
-      for word_indices, word_label in zip(preprocess(words, self.tokenizer), labels):
-        indices.extend(word_indices)
-        indices_labels.extend([word_label]*len(word_indices))
-
-      return words, labels , indices, indices_labels
+        for word_indices, word_label in zip(preprocess(words, self.tokenizer), labels):
+            indices.extend(word_indices)
+            indices_labels.extend([word_label]*len(word_indices))
+        print(words, labels , indices, indices_labels)
+        return words, labels , indices, indices_labels
     
     def collate_fn(self, batch):
       """
