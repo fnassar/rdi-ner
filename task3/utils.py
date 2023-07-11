@@ -7,9 +7,11 @@ from transformers import Trainer
 import pandas as pd
 
 def preprocess(data, tokenizer):
-  tokens = tokenizer(data) 
-  token = [token[1:len(token)-1] for token in tokens['input_ids']]
-  return (token)
+    tokens = tokenizer(data) 
+    token = [token[1:len(token)-1] for token in tokens['input_ids']]
+    # token = [token[1:len(token)-1] for token in tokens['input_ids']]
+    # print(token)
+    return token
 
 
 

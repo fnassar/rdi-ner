@@ -16,20 +16,34 @@ class Model(nn.Module):
     
 
     def forward(self, inputs, labels=None):
+        # print(inputs)
         outputs = self.model(inputs)
         return outputs
 
-from sklearn.metrics import f1_score
+from sklearn.metrics import f1_score, classification_report
 
 def compute_metrics(pred):
+    inputs= pred.inputs
     labels = pred.label_ids.flatten()
     preds = pred.predictions.argmax(-1).flatten()
     mask = labels!=-100
 
     labels, preds = labels[mask], preds[mask]
 
-
     f1 = f1_score(labels, preds, average="macro")
+
+    id2label = {0: 'B-LOC',1: 'B-MISC', 2: 'B-ORG', 3: 'B-PERS', 4: 'I-LOC', 5: 'I-MISC', 6: 'I-ORG', 7: 'I-PERS', 8: 'O'}
+
+    classes = [v for k, v in sorted(id2label.items())]
+
+    report = classification_report(labels, preds, target_names=classes)
+
+    print(inputs)
+
+    print(len(labels))
+
+    print(report)
+
     return {"f1":f1}
 
 

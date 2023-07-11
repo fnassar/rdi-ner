@@ -15,7 +15,6 @@ class Dataset(BaseDataset):
         sentence = []
 
         for line in data:
-            # print(line.strip('\n').split(), len(line), end="___")
             if len(line)>1:
                 word, label = line.strip('\n').split(' ')
                 # print(word, label)

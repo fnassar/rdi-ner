@@ -13,7 +13,7 @@ from transformers import AutoTokenizer, Trainer, AutoModelForTokenClassification
 # my files/ classes
 from dataset import Dataset
 from model import Model, compute_metrics
-from utils import split_data_file, prep_loss_data
+from utils import split_data_file
 
 def main():
     args = (a for a in sys.argv[1:] if not (a[:1]=="-" and a[1:]))
@@ -21,8 +21,6 @@ def main():
     return run(*args, **kwargs)
 
 def run(train_name, eval_name=None, out_name="train", epochs=3, train_batch_size=16, eval_batch_size=None, gradient_accumulation_steps=1, config=None):
-
-    # train_name, eval_name=None, out_name="train", epochs=3, train_batch_size=16, eval_batch_size=None, gradient_accumulation_steps=1, config=None
     epochs = int(epochs)
     train_batch_size = int(train_batch_size)
     eval_batch_size = int(eval_batch_size) if eval_batch_size else train_batch_size
@@ -35,8 +33,6 @@ def run(train_name, eval_name=None, out_name="train", epochs=3, train_batch_size
     model = Model(True, config=None)
     
     label2id = model.model.config.label2id
-
-    tokenizer = AutoTokenizer.from_pretrained("CAMeL-Lab/bert-base-arabic-camelbert-mix-ner")
     
     # get data from dataset.py
     if(eval_name):
@@ -63,7 +59,8 @@ def run(train_name, eval_name=None, out_name="train", epochs=3, train_batch_size
         gradient_accumulation_steps = gradient_accumulation_steps,
         label_names=["labels"],
         label_smoothing_factor=0.001,
-        evaluation_strategy="epoch",
+        evaluation_strategy="steps",
+        # evaluation_strategy="epoch",
         logging_steps = logging_steps
         )
 
