@@ -35,7 +35,7 @@ class Dataset(BaseDataset):
         labels = [label for _, label in item]
         indices, indices_labels = [], []
 
-        for word_indices, word_label in zip(preprocess(words, self.tokenizer), labels):
+        for (word_indices, token), word_label in zip(preprocess(words, self.tokenizer), labels):
             indices.extend(word_indices)
             indices_labels.extend([word_label]*len(word_indices))
         # print(words, labels , indices, indices_labels)
