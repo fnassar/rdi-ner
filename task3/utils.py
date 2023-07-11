@@ -9,8 +9,8 @@ import pandas as pd
 def preprocess(data, tokenizer):
     tokens = tokenizer(data) 
     # print(tokens)
-    token = (token[1:len(token)-1] for token in tokens['input_ids'] if len(tokens['input_ids'])>2)
-    print(token)
+    token = ([[token[1]] for token in tokens['input_ids'] if len(tokens['input_ids'])>2])
+    # print(token)
     # token = [token[1:len(token)-1] for token in tokens['input_ids']]
     
     return token

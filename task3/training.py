@@ -36,10 +36,10 @@ def run(train_name, eval_name=None, out_name="train", epochs=3, train_batch_size
     
     # get data from dataset.py
     if(eval_name):
-        
         train_dataset = Dataset(train_name, tokenizer=tokenizer, label2id=label2id)
         eval_dataset = Dataset(eval_name, tokenizer=tokenizer, label2id=label2id)
     else:
+        print('split first')
         train_name, eval_name = split_data_file(train_name, 0.8) #(data_to_be_Split, train_eval_data_ratio)
 
         train_dataset = Dataset(train_name, tokenizer=tokenizer, label2id=label2id)
