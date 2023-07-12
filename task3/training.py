@@ -19,6 +19,7 @@ from model import Model, compute_metrics
 from utils import split_data_file
 
 def main():
+    if len(sys.argv)==1 or {"-h", "--help"} & set(sys.argv): log(main.__doc__, end=""); exit(1)
     args = (a for a in sys.argv[1:] if not (a[:1]=="-" and a[1:]))
     kwargs = {k: next(iter(v), True) for k, *v in (a.lstrip("-").split("=",1) for a in sys.argv[1:] if (a[:1]=="-" and a[1:]))}
     return run(*args, **kwargs)
@@ -84,12 +85,20 @@ def run(train_name, eval_name=None, out_name="train", epochs=3, train_batch_size
         import code; code.interact(local=globals()|locals())
     log(f"\x1b[1K\r]Training: done. time: {time.time()-st:.3f}")
 
-    trainer.save_model()
+    trainer.save_model(f"{out_name}/model")
+    tokenizer.save_pretrained(f"{out_name}/model")
+    model.model.config.to_json_file(f"{out_name}/model/config.json")
 
 
 
-    trainer.train()
+
+    # trainer.train()
 
 
-main()
+def log(*args, **kwargs): print(*args, file=sys.sterr, flush=True, **kwargs)
+
+if __name__ == "__main__": main()
+
+
+# main()
     
