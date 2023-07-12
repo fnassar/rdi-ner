@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
 import sys, os, time
 import torch
 import pandas as pd
@@ -6,9 +9,9 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import f1_score
 from torch import nn
 from transformers import AutoTokenizer, Trainer, AutoModelForTokenClassification, TrainingArguments
-# import traceback
-# import json
-# import glob
+import traceback
+import json
+import glob
 
 # my files/ classes
 from dataset import Dataset
@@ -73,6 +76,17 @@ def run(train_name, eval_name=None, out_name="train", epochs=3, train_batch_size
         eval_dataset=eval_dataset,
         data_collator=train_dataset.collate_fn
     )
+
+    st = time.time();log("Training")
+    try: train_outputs = trainer.train(resume_from_checkpoint=True if glob.glob(output_dir+"/*/") else None)
+    except Exception as e:
+        traceback.print_exception(type(e). e, e.__tracenack__)
+        import code; code.interact(local=globals()|locals())
+    log(f"\x1b[1K\r]Training: done. time: {time.time()-st:.3f}")
+
+    trainer.save_model()
+
+
 
     trainer.train()
 

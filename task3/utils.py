@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 import random
@@ -15,6 +16,7 @@ def preprocess(data, tokenizer):
     
     if isinstance(data, str): data = data.split()
     for word in data:
+        word = clean_text(word)
         tokenized = tokenizer(word, truncation=True, add_special_tokens=False, return_tensors="pt")
         input_ids = tokenized["input_ids"][0]
         tokens = tokenized.tokens()
